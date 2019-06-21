@@ -17,14 +17,14 @@ import static com.sobte.cqp.jcq.event.JcqApp.CQ;
  * 类说明:
  */
 public class GroupCheck {
-    boolean inGroupBan;
-    boolean isQqBan;
-    String msg;
-    Long groupId;
+    private boolean inGroupBan;
+    private boolean isQqBan;
+    private String msg;
+    private long groupId;
 
-    public GroupCheck(Long groupId, Long fromQQ, String msg) {
+    public GroupCheck(long groupId, long fromQq, String msg) {
         inGroupBan = checkBanGroup(groupId);
-        isQqBan = checkBanQq(fromQQ);
+        isQqBan = checkBanQq(fromQq);
         this.msg = msg;
         this.groupId = groupId;
     }

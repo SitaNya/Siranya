@@ -32,13 +32,34 @@ public class SelectBanGroupList {
      */
     public void flushGroupListFromDatabase() {
         try (Connection conn = DbUtil.getConnection()) {
-            String sql = "select * from banGroupList where botId=?";
+            String sql = "select groupId from banGroupList where botId=?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setLong(1, CQ.getLoginQQ());
                 try (ResultSet set = ps.executeQuery()) {
                     ArrayList<Long> banGroupListTmp = new ArrayList<>();
                     while (set.next()) {
-                        banGroupListTmp.add(Long.parseLong(set.getString("groupList")));
+                        banGroupListTmp.add(Long.parseLong(set.getString("groupId")));
+                    }
+                    BAN_GROUP_LIST.put(CQ.getLoginQQ(), banGroupListTmp);
+                }
+            }
+        } catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 刷新kp主群设定到静态变量中，只有静态变量中找不到某人的kp主群记录时才会使用
+     */
+    public void flushGroupListFromDatabase() {
+        try (Connection conn = DbUtil.getConnection()) {
+            String sql = "select createTime,reason from banGroupList where botId=? and groupId=?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setLong(1, CQ.getLoginQQ());
+                try (ResultSet set = ps.executeQuery()) {
+                    ArrayList<Long> banGroupListTmp = new ArrayList<>();
+                    while (set.next()) {
+                        banGroupListTmp.add(Long.parseLong(set.getString("groupId")));
                     }
                     BAN_GROUP_LIST.put(CQ.getLoginQQ(), banGroupListTmp);
                 }

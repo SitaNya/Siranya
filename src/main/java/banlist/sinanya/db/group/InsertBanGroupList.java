@@ -4,9 +4,7 @@ import banlist.sinanya.db.tools.DbUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static com.sobte.cqp.jcq.event.JcqApp.CQ;
 
@@ -27,12 +25,14 @@ public class InsertBanGroupList {
      *
      * @param groupId 群号
      */
-    public void insertBanGroup(Long groupId) {
+    public void insertBanGroup(Long groupId, String reason) {
             try (Connection conn = DbUtil.getConnection()) {
-                String sql = "INSERT INTO banGroupList(botId,groupId) VALUES(?,?)";
+                String sql = "INSERT INTO banGroupList(createTime,botId,groupId,reason) VALUES(?,?,?,?)";
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                    ps.setLong(1, CQ.getLoginQQ());
-                    ps.setLong(2, groupId);
+                    ps.setTimestamp(1,new Timestamp(System.currentTimeMillis()));
+                    ps.setLong(2, CQ.getLoginQQ());
+                    ps.setLong(3, groupId);
+                    ps.setString(4,reason);
 
                     ps.executeUpdate();
                 }
