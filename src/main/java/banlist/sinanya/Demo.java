@@ -1,12 +1,16 @@
 package banlist.sinanya;
 
+import banlist.sinanya.entity.EntityBanDetail;
+import banlist.sinanya.group.GroupCheck;
+import banlist.sinanya.group.PrivateCheck;
 import com.sobte.cqp.jcq.entity.*;
 import com.sobte.cqp.jcq.event.JcqAppAbstract;
 
 import javax.swing.*;
 
-import static banlist.sinanya.tools.banlist.GetBanList.flushBanGroup;
-import static banlist.sinanya.tools.banlist.GetBanList.flushQqGroup;
+import static banlist.sinanya.tools.banlist.GetBanList.*;
+import static banlist.sinanya.tools.banlist.SetBanList.setBanGroup;
+import static banlist.sinanya.tools.banlist.SetBanList.setBanQq;
 
 /**
  * 本文件是JCQ插件的主类<br>
@@ -150,9 +154,12 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     @Override
     public int privateMsg(int subType, int msgId, long fromQQ, String msg, int font) {
-        // 这里处理消息
-        CQ.sendPrivateMsg(fromQQ, "你发送了这样的消息：" + msg + "\n来自Java插件");
-        return MSG_IGNORE;
+        PrivateCheck privateCheck = new PrivateCheck(fromQQ);
+        if (privateCheck.isBanQq() == 1) {
+            return MSG_INTERCEPT;
+        } else {
+            return MSG_IGNORE;
+        }
     }
 
     /**
@@ -188,8 +195,17 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
         //List<CQImage> images = CC.getCQImages(msg);// 此方法为获取消息中所有的CQ图片数据，错误时打印异常到控制台，返回 已解析的数据
 
         // 这里处理消息
-        CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你发送了这样的消息：" + msg + "\n来自Java插件");
-        return MSG_IGNORE;
+//        CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你发送了这样的消息：" + msg + "\n来自Java插件");
+        GroupCheck groupCheck = new GroupCheck(fromGroup, fromQQ, msg);
+        if (groupCheck.inBanGroup() == 1) {
+            return MSG_INTERCEPT;
+        } else if (groupCheck.isBanQq() == 1) {
+            return MSG_INTERCEPT;
+        } else if (groupCheck.isForbidden() == 1) {
+            return MSG_INTERCEPT;
+        } else {
+            return MSG_IGNORE;
+        }
     }
 
     /**
@@ -206,9 +222,16 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     @Override
     public int discussMsg(int subtype, int msgId, long fromDiscuss, long fromQQ, String msg, int font) {
-        // 这里处理消息
-
-        return MSG_IGNORE;
+        GroupCheck groupCheck = new GroupCheck(fromDiscuss, fromQQ, msg);
+        if (groupCheck.inBanGroup() == 1) {
+            return MSG_INTERCEPT;
+        } else if (groupCheck.isBanQq() == 1) {
+            return MSG_INTERCEPT;
+        } else if (groupCheck.isForbidden() == 1) {
+            return MSG_INTERCEPT;
+        } else {
+            return MSG_IGNORE;
+        }
     }
 
     /**
@@ -262,8 +285,10 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     @Override
     public int groupMemberDecrease(int subtype, int sendTime, long fromGroup, long fromQQ, long beingOperateQQ) {
-        // 这里处理消息
-
+        if (subtype == 2 && beingOperateQQ == CQ.getLoginQQ()) {
+            setBanGroup(fromGroup, "被踢出群");
+            setBanQq(fromQQ, "被踢出群: " + fromGroup);
+        }
         return MSG_IGNORE;
     }
 
@@ -280,9 +305,14 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     @Override
     public int groupMemberIncrease(int subtype, int sendTime, long fromGroup, long fromQQ, long beingOperateQQ) {
-        // 这里处理消息
-
-        return MSG_IGNORE;
+        GroupCheck groupCheck = new GroupCheck(fromGroup, fromQQ);
+        if (groupCheck.inBanGroup() == 1) {
+            return MSG_INTERCEPT;
+        } else if (groupCheck.isBanQq() == 1) {
+            return MSG_INTERCEPT;
+        } else {
+            return MSG_IGNORE;
+        }
     }
 
     /**
@@ -296,9 +326,15 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     @Override
     public int friendAdd(int subtype, int sendTime, long fromQQ) {
-        // 这里处理消息
-
-        return MSG_IGNORE;
+        if (checkBanQq(fromQQ)){
+            EntityBanDetail entityBanDetail = getBanQqInfo(fromQQ);
+            CQ.sendPrivateMsg(fromQQ,"您是黑名单成员，无法提供服务"+"\n" +
+                    "在" + entityBanDetail.getCreateTime() + " 由: " + entityBanDetail.getBotId() + "记录，原因为: " + entityBanDetail.getReason());
+            return MSG_INTERCEPT;
+        }else{
+            CQ.sendPrivateMsg(fromQQ,"欢迎使用");
+            return MSG_IGNORE;
+        }
     }
 
     /**
@@ -322,7 +358,14 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
          */
 
         // CQ.setFriendAddRequest(responseFlag, REQUEST_ADOPT, null); // 同意好友添加请求
-        return MSG_IGNORE;
+        if (checkBanQq(fromQQ)){
+            CQ.setFriendAddRequest(responseFlag, REQUEST_REFUSE, null);
+            return MSG_INTERCEPT;
+        }else{
+            CQ.setFriendAddRequest(responseFlag, REQUEST_ADOPT, null);
+            return MSG_IGNORE;
+        }
+
     }
 
     /**
@@ -354,7 +397,15 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
 		if(subtype == 2){
 			CQ.setGroupAddRequest(responseFlag, REQUEST_GROUP_INVITE, REQUEST_ADOPT, null);// 同意进受邀群
 		}*/
-
+		if (subtype==2) {
+            if (checkBanGroup(fromGroup)) {
+                CQ.setGroupAddRequest(responseFlag, REQUEST_GROUP_INVITE, REQUEST_REFUSE, null);
+                return MSG_INTERCEPT;
+            }else{
+                CQ.setGroupAddRequest(responseFlag, REQUEST_GROUP_INVITE, REQUEST_ADOPT, null);
+                return MSG_IGNORE;
+            }
+        }
         return MSG_IGNORE;
     }
 

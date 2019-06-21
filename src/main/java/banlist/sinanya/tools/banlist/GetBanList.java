@@ -2,6 +2,7 @@ package banlist.sinanya.tools.banlist;
 
 import banlist.sinanya.db.group.SelectBanGroupList;
 import banlist.sinanya.db.qq.SelectBanQqList;
+import banlist.sinanya.entity.EntityBanDetail;
 
 import static banlist.sinanya.system.SystemBanList.BAN_GROUP_LIST;
 import static banlist.sinanya.system.SystemBanList.BAN_QQ_LIST;
@@ -43,5 +44,13 @@ public class GetBanList {
 
     public static void flushQqGroup(){
         selectBanQqList.flushQqListFromDatabase();
+    }
+
+    public static EntityBanDetail getBanQqInfo(long qqId) {
+        return selectBanQqList.selectBanQqInfoFromDatabase(qqId);
+    }
+
+    public static EntityBanDetail getBanGroupInfo(long groupId) {
+        return selectBanGroupList.selectBanGroupInfoFromDatabase(groupId);
     }
 }

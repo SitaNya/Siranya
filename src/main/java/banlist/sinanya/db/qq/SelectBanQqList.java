@@ -1,6 +1,7 @@
 package banlist.sinanya.db.qq;
 
 import banlist.sinanya.db.tools.DbUtil;
+import banlist.sinanya.entity.EntityBanDetail;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static banlist.sinanya.system.SystemBanList.BAN_GROUP_LIST;
 import static banlist.sinanya.system.SystemBanList.BAN_QQ_LIST;
 import static com.sobte.cqp.jcq.event.JcqApp.CQ;
 
@@ -46,5 +48,26 @@ public class SelectBanQqList {
         } catch (SQLException e) {
             Log.error(e.getMessage(), e);
         }
+    }
+
+    /**
+     * 刷新kp主群设定到静态变量中，只有静态变量中找不到某人的kp主群记录时才会使用
+     */
+    public EntityBanDetail selectBanQqInfoFromDatabase(long qqId) {
+        try (Connection conn = DbUtil.getConnection()) {
+            String sql = "select createTime,reason from banQqList where qqId=?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setLong(1, qqId);
+                try (ResultSet set = ps.executeQuery()) {
+                    ArrayList<Long> banGroupListTmp = new ArrayList<>();
+                    while (set.next()) {
+                        return new EntityBanDetail(set.getTimestamp("createTime"), qqId, set.getLong("botId"), set.getString("reason"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+        return null;
     }
 }
