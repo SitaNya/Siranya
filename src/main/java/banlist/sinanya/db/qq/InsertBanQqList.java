@@ -40,7 +40,7 @@ public class InsertBanQqList {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            CQ.logError(e.getMessage(), e.toString());
         }
     }
 
@@ -58,7 +58,7 @@ public class InsertBanQqList {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            CQ.logError(e.getMessage(), e.toString());
         }
     }
 }

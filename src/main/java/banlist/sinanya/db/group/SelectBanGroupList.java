@@ -45,7 +45,7 @@ public class SelectBanGroupList {
                 }
             }
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            CQ.logError(e.getMessage(), e.toString());
         }
     }
 
@@ -84,7 +84,7 @@ public class SelectBanGroupList {
                 }
             }
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            CQ.logError(e.getMessage(), e.toString());
         }
         return banGroupList;
     }

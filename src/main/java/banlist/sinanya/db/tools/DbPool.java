@@ -8,6 +8,8 @@ import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static com.sobte.cqp.jcq.event.JcqApp.CQ;
+
 /**
  * @author SitaNya
  * 日期: 2019-06-15
@@ -39,9 +41,9 @@ class DbPool {
             dataSource.setUser("root");
             dataSource.setPassword("rong");
             dataSource.setIdleConnectionTestPeriod(3600);
-            Log.info("create DbPool");
+            CQ.logInfo( "create DbPool", "create DbPool");
         } catch (PropertyVetoException e) {
-            Log.error(e.getMessage(), e);
+            CQ.logError(e.getMessage(), e.toString());
         }
     }
 
@@ -61,9 +63,9 @@ class DbPool {
 
         try {
             conn = dataSource.getConnection();
-            Log.debug("get Connection");
+            CQ.logInfo( "get Connection", "get Connection");
         } catch (SQLException e) {
-            Log.error("get Connection error: \n" + dataSource.toString() + e.getMessage(), e);
+            CQ.logError("get Connection error: \n" + dataSource.toString() + e.getMessage(), e.toString());
         }
 
         return conn;

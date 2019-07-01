@@ -21,8 +21,6 @@ import static com.sobte.cqp.jcq.event.JcqApp.CQ;
  */
 public class InsertBanGroupList {
 
-    private static final Logger Log = LogManager.getLogger(InsertBanGroupList.class);
-
     /**
      * 将kp主群设定插入或更新到数据库中
      *
@@ -40,7 +38,7 @@ public class InsertBanGroupList {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            CQ.logError(e.getMessage(), e.toString());
         }
     }
 
@@ -58,7 +56,7 @@ public class InsertBanGroupList {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            CQ.logError(e.getMessage(), e.toString());
         }
     }
 }

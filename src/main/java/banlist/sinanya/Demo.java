@@ -146,7 +146,12 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     @Override
     public int privateMsg(int subType, int msgId, long fromQq, String msg, int font) {
-        return new MainFunction(msg, fromQq, 0L).checkQq();
+        try {
+            return new MainFunction(msg, fromQq, 0L).checkQq();
+        } catch (Exception e) {
+            CQ.logError(e.getMessage(), e.toString());
+            return 0;
+        }
     }
 
     /**
