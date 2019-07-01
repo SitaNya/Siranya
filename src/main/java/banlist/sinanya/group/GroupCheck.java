@@ -43,7 +43,6 @@ public class GroupCheck {
 
     public int inBanGroup() {
         if (inGroupBan) {
-
             String groupName = "";
             for (Group group : CQ.getGroupList()) {
                 if (group.getId() == groupId) {

@@ -33,34 +33,19 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     public static void main(String[] args) {
         // CQ此变量为特殊变量，在JCQ启动时实例化赋值给每个插件，而在测试中可以用CQDebug类来代替他
-        CQ = new CQDebug();//new CQDebug("应用目录","应用名称") 可以用此构造器初始化应用的目录
-        CQ.logInfo("[JCQ] TEST Demo", "测试启动");// 现在就可以用CQ变量来执行任何想要的操作了
+        CQ = new CQDebug();
+        //new CQDebug("应用目录","应用名称") 可以用此构造器初始化应用的目录
+        CQ.logInfo("[JCQ] TEST Demo", "测试启动");
+        // 现在就可以用CQ变量来执行任何想要的操作了
         // 要测试主类就先实例化一个主类对象
         Demo demo = new Demo();
         // 下面对主类进行各方法测试,按照JCQ运行过程，模拟实际情况
-        demo.startup();// 程序运行开始 调用应用初始化方法
-        demo.enable();// 程序初始化完成后，启用应用，让应用正常工作
-//        // 开始模拟发送消息
-//        // 模拟私聊消息
-//        // 开始模拟QQ用户发送消息，以下QQ全部编造，请勿添加
-//        demo.privateMsg(0, 10001, 2234567819L, "小姐姐约吗", 0);
-//        demo.privateMsg(0, 10002, 2222222224L, "喵呜喵呜喵呜", 0);
-//        demo.privateMsg(0, 10003, 2111111334L, "可以给我你的微信吗", 0);
-//        demo.privateMsg(0, 10004, 3111111114L, "今天天气真好", 0);
-//        demo.privateMsg(0, 10005, 3333333334L, "你好坏，都不理我QAQ", 0);
-//        // 模拟群聊消息
-//        // 开始模拟群聊消息
-//        demo.groupMsg(0, 10006, 3456789012L, 3333333334L, "", "菜单", 0);
-//        demo.groupMsg(0, 10008, 3456789012L, 11111111114L, "", "小喵呢，出来玩玩呀", 0);
-//        demo.groupMsg(0, 10009, 427984429L, 3333333334L, "", "[CQ:at,qq=2222222224] 来一起玩游戏，开车开车", 0);
-//        demo.groupMsg(0, 10010, 427984429L, 3333333334L, "", "好久不见啦 [CQ:at,qq=11111111114]", 0);
-//        demo.groupMsg(0, 10011, 427984429L, 11111111114L, "", "qwq 有没有一起开的\n[CQ:at,qq=3333333334]你玩嘛", 0);
-//        // ......
-//        // 依次类推，可以根据实际情况修改参数，和方法测试效果
-//        // 以下是收尾触发函数
-        // demo.disable();// 实际过程中程序结束不会触发disable，只有用户关闭了此插件才会触发
-
-        demo.exit();// 最后程序运行结束，调用exit方法
+        demo.startup();
+        // 程序运行开始 调用应用初始化方法
+        demo.enable();
+        // 程序初始化完成后，启用应用，让应用正常工作
+        demo.exit();
+        // 最后程序运行结束，调用exit方法
     }
 
     /**
@@ -71,12 +56,13 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
     @Override
     public String appInfo() {
         // 应用AppID,规则见 http://d.cqp.me/Pro/开发/基础信息#appid
-        String appID = "com.example.demo";// 记住编译后的文件和json也要使用appid做文件名
+        String appId = "com.example.demo";
+        // 记住编译后的文件和json也要使用appid做文件名
         /*
           本函数【禁止】处理其他任何代码，以免发生异常情况。
           如需执行初始化代码请在 startup 事件中执行（Type=1001）。
          */
-        return CQAPIVER + "," + appID;
+        return CQAPIVER + "," + appId;
     }
 
     /**
@@ -144,7 +130,7 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      *
      * @param subType 子类型，11/来自好友 1/来自在线状态 2/来自群 3/来自讨论组
      * @param msgId   消息ID
-     * @param fromQQ  来源QQ
+     * @param fromQq  来源QQ
      * @param msg     消息内容
      * @param font    字体
      * @return 返回值*不能*直接返回文本 如果要回复消息，请调用api发送<br>
@@ -153,8 +139,8 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      * 如果不回复消息，交由之后的应用/过滤器处理，这里 返回  {@link IMsg#MSG_IGNORE MSG_IGNORE} - 忽略本条消息
      */
     @Override
-    public int privateMsg(int subType, int msgId, long fromQQ, String msg, int font) {
-        PrivateCheck privateCheck = new PrivateCheck(fromQQ);
+    public int privateMsg(int subType, int msgId, long fromQq, String msg, int font) {
+        PrivateCheck privateCheck = new PrivateCheck(fromQq);
         if (privateCheck.isBanQq() == 1) {
             return MSG_INTERCEPT;
         } else {
@@ -169,17 +155,17 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      * @param subType       子类型，目前固定为1
      * @param msgId         消息ID
      * @param fromGroup     来源群号
-     * @param fromQQ        来源QQ号
+     * @param fromQq        来源QQ号
      * @param fromAnonymous 来源匿名者
      * @param msg           消息内容
      * @param font          字体
      * @return 关于返回值说明, 见 {@link #privateMsg 私聊消息} 的方法
      */
     @Override
-    public int groupMsg(int subType, int msgId, long fromGroup, long fromQQ, String fromAnonymous, String msg,
+    public int groupMsg(int subType, int msgId, long fromGroup, long fromQq, String fromAnonymous, String msg,
                         int font) {
         // 如果消息来自匿名者
-        if (fromQQ == 80000000L && !fromAnonymous.equals("")) {
+        if (fromQq == 80000000L && !fromAnonymous.equals("")) {
             // 将匿名用户信息放到 anonymous 变量中
             Anonymous anonymous = CQ.getAnonymous(fromAnonymous);
         }
@@ -195,8 +181,8 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
         //List<CQImage> images = CC.getCQImages(msg);// 此方法为获取消息中所有的CQ图片数据，错误时打印异常到控制台，返回 已解析的数据
 
         // 这里处理消息
-//        CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你发送了这样的消息：" + msg + "\n来自Java插件");
-        GroupCheck groupCheck = new GroupCheck(fromGroup, fromQQ, msg);
+//        CQ.sendGroupMsg(fromGroup, CC.at(fromQq) + "你发送了这样的消息：" + msg + "\n来自Java插件");
+        GroupCheck groupCheck = new GroupCheck(fromGroup, fromQq, msg);
         if (groupCheck.inBanGroup() == 1) {
             return MSG_INTERCEPT;
         } else if (groupCheck.isBanQq() == 1) {
