@@ -49,7 +49,6 @@ public class MainFunction {
 
     public int checkGroup() {
         GroupCheck groupCheck = new GroupCheck(fromGroup, fromQq, msg);
-        GroupControl groupControl = new GroupControl(fromQq, fromGroup);
 
         if (groupCheck.inBanGroup() == 1) {
             return MSG_INTERCEPT;
@@ -59,19 +58,12 @@ public class MainFunction {
             return MSG_INTERCEPT;
         }
 
-        if (isBanGroupSet) {
-            return groupControl.set(msg);
-        } else if (isBanGroupRm) {
-            return groupControl.rm(msg);
-        } else if (isBanGroupShow) {
-            return groupControl.get();
-        }
-
-        return MSG_IGNORE;
+        return checkQq();
     }
 
     public int checkQq() {
         QqControl qqControl = new QqControl(fromGroup, fromQq);
+        GroupControl groupControl = new GroupControl(fromQq, fromGroup);
         PrivateCheck privateCheck = new PrivateCheck(fromQq);
 
         if (privateCheck.isBanQq() == 1) {
@@ -84,6 +76,14 @@ public class MainFunction {
             return qqControl.rm(msg);
         } else if (isBanQqShow) {
             return qqControl.get();
+        }
+
+        if (isBanGroupSet) {
+            return groupControl.set(msg);
+        } else if (isBanGroupRm) {
+            return groupControl.rm(msg);
+        } else if (isBanGroupShow) {
+            return groupControl.get();
         }
 
         return MSG_IGNORE;

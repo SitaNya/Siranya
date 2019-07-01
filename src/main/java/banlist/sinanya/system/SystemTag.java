@@ -18,7 +18,7 @@ public interface SystemTag {
     String BAN_GROUP_RM = BAN_GROUP_HEADER + "rm";
     String BAN_GROUP_SHOW = BAN_GROUP_HEADER;
 
-    String BAN_QQ_HEADER = HEADER + "ban[^main][ ]*";
+    String BAN_QQ_HEADER = HEADER + "ban[ ]*";
     String BAN_QQ_SET = BAN_QQ_HEADER + "set";
     String BAN_QQ_RM = BAN_QQ_HEADER + "rm";
     String BAN_QQ_SHOW = BAN_QQ_HEADER;

@@ -36,9 +36,14 @@ public class GroupControl implements MakeList {
     }
 
     public int set(String msg) {
-        if (fromGroup != MASTER_GROUP || fromQq != MASTER_QQ) {
-            CQ.sendGroupMsg(MASTER_GROUP, "由: " + getQqName(fromQq) + "(" + fromQq + ")在群: " + getGroupName(fromGroup) + "(" + fromGroup + ")使用命令试图添加黑名单群列表，已驳回");
-            CQ.sendGroupMsg(fromGroup, "只可以由主人: " + getQqName(MASTER_QQ) + "(" + MASTER_QQ + ")在主控群: " + getGroupName(MASTER_GROUP) + "(" + MASTER_GROUP + "或私聊时进行黑名单群列表添加");
+        if (fromQq != MASTER_QQ) {
+            if (fromGroup == 0) {
+                CQ.sendPrivateMsg(fromQq, "只可以由主人: " + getQqName(MASTER_QQ) + "(" + MASTER_QQ + ")在主控群: " + getGroupName(MASTER_GROUP) + "(" + MASTER_GROUP + ")或私聊时进行黑名单群列表添加");
+                CQ.sendGroupMsg(MASTER_GROUP, "由: " + getQqName(fromQq) + "(" + fromQq + ")私聊使用命令试图添加黑名单群列表，已驳回");
+            } else {
+                CQ.sendGroupMsg(MASTER_GROUP, "由: " + getQqName(fromQq) + "(" + fromQq + ")在群: " + getGroupName(fromGroup) + "(" + fromGroup + ")使用命令试图添加黑名单群列表，已驳回");
+                CQ.sendGroupMsg(fromGroup, "只可以由主人: " + getQqName(MASTER_QQ) + "(" + MASTER_QQ + ")在主控群: " + getGroupName(MASTER_GROUP) + "(" + MASTER_GROUP + ")或私聊时进行黑名单群列表添加");
+            }
             return MSG_INTERCEPT;
         }
         msg = removeTag(msg, BAN_GROUP_SET);
@@ -54,9 +59,14 @@ public class GroupControl implements MakeList {
     }
 
     public int get() {
-        if (fromGroup != MASTER_GROUP || fromQq != MASTER_QQ) {
-            CQ.sendGroupMsg(MASTER_GROUP, "由: " + getQqName(fromQq) + "(" + fromQq + ")在群: " + getGroupName(fromGroup) + "(" + fromGroup + ")使用命令试图获取黑名单群列表，已驳回");
-            CQ.sendGroupMsg(fromGroup, "只可以由主人: " + getQqName(MASTER_QQ) + "(" + MASTER_QQ + ")在主控群: " + getGroupName(MASTER_GROUP) + "(" + MASTER_GROUP + "或私聊时进行黑名单群列表获取");
+        if (fromQq != MASTER_QQ) {
+            if (fromGroup==0){
+                CQ.sendGroupMsg(MASTER_GROUP, "由: " + getQqName(fromQq) + "(" + fromQq + ")在私聊使用命令试图获取黑名单群列表，已驳回");
+                CQ.sendPrivateMsg(fromQq, "只可以由主人: " + getQqName(MASTER_QQ) + "(" + MASTER_QQ + ")在主控群: " + getGroupName(MASTER_GROUP) + "(" + MASTER_GROUP + ")或私聊时进行黑名单群列表获取");
+            }else {
+                CQ.sendGroupMsg(MASTER_GROUP, "由: " + getQqName(fromQq) + "(" + fromQq + ")在群: " + getGroupName(fromGroup) + "(" + fromGroup + ")使用命令试图获取黑名单群列表，已驳回");
+                CQ.sendGroupMsg(fromGroup, "只可以由主人: " + getQqName(MASTER_QQ) + "(" + MASTER_QQ + ")在主控群: " + getGroupName(MASTER_GROUP) + "(" + MASTER_GROUP + ")或私聊时进行黑名单群列表获取");
+            }
             return MSG_INTERCEPT;
         }
         CQ.sendGroupMsg(MASTER_GROUP, "以下是云黑内黑名单群列表:" + getBanGroupList());
@@ -64,9 +74,14 @@ public class GroupControl implements MakeList {
     }
 
     public int rm(String msg) {
-        if (fromGroup != MASTER_GROUP || fromQq != MASTER_QQ) {
-            CQ.sendGroupMsg(MASTER_GROUP, "由: " + getQqName(fromQq) + "(" + fromQq + ")在群: " + getGroupName(fromGroup) + "(" + fromGroup + ")使用命令试图移除黑名单群列表，已驳回");
-            CQ.sendGroupMsg(fromGroup, "只可以由主人: " + getQqName(MASTER_QQ) + "(" + MASTER_QQ + ")在主控群: " + getGroupName(MASTER_GROUP) + "(" + MASTER_GROUP + "或私聊时进行黑名单群列表移除");
+        if (fromQq != MASTER_QQ) {
+            if (fromGroup == 0) {
+                CQ.sendGroupMsg(MASTER_GROUP, "由: " + getQqName(fromQq) + "(" + fromQq + ")私聊使用命令试图移除黑名单群列表，已驳回");
+                CQ.sendPrivateMsg(fromGroup, "只可以由主人: " + getQqName(MASTER_QQ) + "(" + MASTER_QQ + ")在主控群: " + getGroupName(MASTER_GROUP) + "(" + MASTER_GROUP + ")或私聊时进行黑名单群列表移除");
+            } else {
+                CQ.sendGroupMsg(MASTER_GROUP, "由: " + getQqName(fromQq) + "(" + fromQq + ")在群: " + getGroupName(fromGroup) + "(" + fromGroup + ")使用命令试图移除黑名单群列表，已驳回");
+                CQ.sendGroupMsg(fromGroup, "只可以由主人: " + getQqName(MASTER_QQ) + "(" + MASTER_QQ + ")在主控群: " + getGroupName(MASTER_GROUP) + "(" + MASTER_GROUP + ")或私聊时进行黑名单群列表移除");
+            }
             return MSG_INTERCEPT;
         }
         msg = removeTag(msg, BAN_GROUP_RM);
@@ -77,7 +92,7 @@ public class GroupControl implements MakeList {
             resultList.add("\n" + getGroupName(id) + "(" + id + ")");
             rmBanQq(Long.parseLong(id));
         }
-        CQ.sendGroupMsg(MASTER_GROUP, "由: " + fromQq + "使用命令移除以下群黑名单q群列表:" + resultList.toString());
+        CQ.sendGroupMsg(MASTER_GROUP, "由: " + fromQq + "使用命令移除以下群黑名单群列表:" + resultList.toString());
         return MSG_INTERCEPT;
     }
 }
