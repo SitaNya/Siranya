@@ -79,11 +79,11 @@ public class MainFunction {
         }
 
         if (isBanQqSet) {
-            qqControl.set(msg);
+            return qqControl.set(msg);
         } else if (isBanQqRm) {
-            qqControl.rm(msg);
+            return qqControl.rm(msg);
         } else if (isBanQqShow) {
-            qqControl.get();
+            return qqControl.get();
         }
 
         return MSG_IGNORE;
