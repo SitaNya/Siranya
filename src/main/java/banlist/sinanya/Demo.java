@@ -23,6 +23,7 @@ import static banlist.sinanya.tools.banlist.SetBanList.setBanQq;
  * 辅助开发变量: {@link JcqAppAbstract#CQ CQ}({@link com.sobte.cqp.jcq.entity.CoolQ 酷Q核心操作类}),
  * {@link JcqAppAbstract#CC CC}({@link com.sobte.cqp.jcq.message.CQCode 酷Q码操作类}),
  * 具体功能可以查看文档
+ * @author zhangxiaozhou
  */
 public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
     /**
@@ -56,7 +57,7 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
     @Override
     public String appInfo() {
         // 应用AppID,规则见 http://d.cqp.me/Pro/开发/基础信息#appid
-        String appId = "com.example.demo";
+        String appId = "sitanya.icloud.banList";
         // 记住编译后的文件和json也要使用appid做文件名
         /*
           本函数【禁止】处理其他任何代码，以免发生异常情况。
@@ -182,16 +183,7 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
 
         // 这里处理消息
 //        CQ.sendGroupMsg(fromGroup, CC.at(fromQq) + "你发送了这样的消息：" + msg + "\n来自Java插件");
-        GroupCheck groupCheck = new GroupCheck(fromGroup, fromQq, msg);
-        if (groupCheck.inBanGroup() == 1) {
-            return MSG_INTERCEPT;
-        } else if (groupCheck.isBanQq() == 1) {
-            return MSG_INTERCEPT;
-        } else if (groupCheck.isForbidden() == 1) {
-            return MSG_INTERCEPT;
-        } else {
-            return MSG_IGNORE;
-        }
+        return checkInGroupAndDiscuss(fromGroup,fromQq,msg);
     }
 
     /**
@@ -208,16 +200,7 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     @Override
     public int discussMsg(int subtype, int msgId, long fromDiscuss, long fromQQ, String msg, int font) {
-        GroupCheck groupCheck = new GroupCheck(fromDiscuss, fromQQ, msg);
-        if (groupCheck.inBanGroup() == 1) {
-            return MSG_INTERCEPT;
-        } else if (groupCheck.isBanQq() == 1) {
-            return MSG_INTERCEPT;
-        } else if (groupCheck.isForbidden() == 1) {
-            return MSG_INTERCEPT;
-        } else {
-            return MSG_IGNORE;
-        }
+       return checkInGroupAndDiscuss(fromDiscuss,fromQQ,msg);
     }
 
     /**
@@ -413,6 +396,19 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
     public int menuB() {
         JOptionPane.showMessageDialog(null, "这是测试菜单B，可以在这里加载窗口");
         return 0;
+    }
+
+    private int checkInGroupAndDiscuss(long fromGroup,long fromQq,String msg){
+        GroupCheck groupCheck = new GroupCheck(fromGroup, fromQq, msg);
+        if (groupCheck.inBanGroup() == 1) {
+            return MSG_INTERCEPT;
+        } else if (groupCheck.isBanQq() == 1) {
+            return MSG_INTERCEPT;
+        } else if (groupCheck.isForbidden() == 1) {
+            return MSG_INTERCEPT;
+        } else {
+            return MSG_IGNORE;
+        }
     }
 
 }
