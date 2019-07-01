@@ -10,7 +10,7 @@ package banlist.sinanya.tools.makedata;
  * 类说明:
  */
 public class RemoveTag {
-    public static String removeTag(String messages,String tag){
-        return messages.replaceAll(tag,"").trim();
+    public static String removeTag(String messages, String tag) {
+        return messages.replaceAll(tag, "").trim();
     }
 }

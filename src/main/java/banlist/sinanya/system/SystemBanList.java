@@ -13,7 +13,7 @@ import java.util.HashMap;
  * 类说明:
  */
 public interface SystemBanList {
-    HashMap<Long, ArrayList<Long>> BAN_GROUP_LIST=new HashMap<>();
+    HashMap<Long, ArrayList<Long>> BAN_GROUP_LIST = new HashMap<>();
 
-    HashMap<Long, ArrayList<Long>> BAN_QQ_LIST=new HashMap<>();
+    HashMap<Long, ArrayList<Long>> BAN_QQ_LIST = new HashMap<>();
 }

@@ -22,11 +22,11 @@ public class PrivateCheck {
     private boolean isQqBan;
 
     public PrivateCheck(long fromQq) {
-        this.fromQq=fromQq;
+        this.fromQq = fromQq;
         isQqBan = checkBanQq(fromQq);
     }
 
-    public int isBanQq(){
+    public int isBanQq() {
         if (isQqBan) {
             EntityBanDetail entityBanDetail = getBanQqInfo(fromQq);
             CQ.sendPrivateMsg(fromQq, "检测到黑名单成员: " + fromQq + "(" + CQ.getAnonymous(String.valueOf(fromQq)).getName() + ")的命令，不予以回复\n" +

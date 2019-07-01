@@ -40,11 +40,11 @@ public class GetBanList {
         }
     }
 
-    public static void flushBanGroup(){
+    public static void flushBanGroup() {
         selectBanGroupList.flushGroupListFromDatabase();
     }
 
-    public static void flushQqGroup(){
+    public static void flushQqGroup() {
         selectBanQqList.flushQqListFromDatabase();
     }
 

@@ -22,8 +22,8 @@ public class SetBanList {
     private static InsertBanGroupList insertBanGroupList = new InsertBanGroupList();
     private static InsertBanQqList insertBanQqList = new InsertBanQqList();
 
-    public static void setBanGroup(Long groupId,String reason) {
-        insertBanGroupList.insertBanGroup(groupId,reason);
+    public static void setBanGroup(Long groupId, String reason) {
+        insertBanGroupList.insertBanGroup(groupId, reason);
         ArrayList<Long> banGroup = new ArrayList<>();
         if (BAN_GROUP_LIST.containsKey(CQ.getLoginQQ())) {
             banGroup = BAN_GROUP_LIST.get(CQ.getLoginQQ());
@@ -42,8 +42,8 @@ public class SetBanList {
         BAN_GROUP_LIST.put(CQ.getLoginQQ(), banGroup);
     }
 
-    public static void setBanQq(Long qqId,String reason) {
-        insertBanQqList.insertBanQq(qqId,reason);
+    public static void setBanQq(Long qqId, String reason) {
+        insertBanQqList.insertBanQq(qqId, reason);
         ArrayList<Long> banQq = new ArrayList<>();
         if (BAN_QQ_LIST.containsKey(CQ.getLoginQQ())) {
             banQq = BAN_QQ_LIST.get(CQ.getLoginQQ());

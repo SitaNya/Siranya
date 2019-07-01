@@ -23,6 +23,7 @@ import static banlist.sinanya.tools.banlist.SetBanList.setBanQq;
  * 辅助开发变量: {@link JcqAppAbstract#CQ CQ}({@link com.sobte.cqp.jcq.entity.CoolQ 酷Q核心操作类}),
  * {@link JcqAppAbstract#CC CC}({@link com.sobte.cqp.jcq.message.CQCode 酷Q码操作类}),
  * 具体功能可以查看文档
+ *
  * @author zhangxiaozhou
  */
 @SuppressWarnings("AlibabaRemoveCommentedCode")
@@ -303,7 +304,7 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
             CQ.sendPrivateMsg(fromQq, "您是黑名单成员，无法提供服务" + "\n" +
                     "在" + entityBanDetail.getCreateTime() + " 由: " + entityBanDetail.getBotId() + "记录，原因为: " + entityBanDetail.getReason());
             return MSG_INTERCEPT;
-        }else{
+        } else {
             CQ.sendPrivateMsg(fromQq, "欢迎使用");
             return MSG_IGNORE;
         }
@@ -333,7 +334,7 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
         if (checkBanQq(fromQq)) {
             CQ.setFriendAddRequest(responseFlag, REQUEST_REFUSE, null);
             return MSG_INTERCEPT;
-        }else{
+        } else {
             CQ.setFriendAddRequest(responseFlag, REQUEST_ADOPT, null);
             return MSG_IGNORE;
         }
@@ -373,7 +374,7 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
             if (checkBanGroup(fromGroup)) {
                 CQ.setGroupAddRequest(responseFlag, REQUEST_GROUP_INVITE, REQUEST_REFUSE, null);
                 return MSG_INTERCEPT;
-            }else{
+            } else {
                 CQ.setGroupAddRequest(responseFlag, REQUEST_GROUP_INVITE, REQUEST_ADOPT, null);
                 return MSG_IGNORE;
             }

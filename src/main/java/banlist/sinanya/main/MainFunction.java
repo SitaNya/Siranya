@@ -78,11 +78,11 @@ public class MainFunction {
             return MSG_INTERCEPT;
         }
 
-        if (isBanQqSet){
+        if (isBanQqSet) {
             qqControl.set(msg);
-        }else if (isBanQqRm){
+        } else if (isBanQqRm) {
             qqControl.rm(msg);
-        }else if (isBanQqShow){
+        } else if (isBanQqShow) {
             qqControl.get();
         }
 

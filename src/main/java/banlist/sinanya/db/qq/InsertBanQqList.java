@@ -29,19 +29,19 @@ public class InsertBanQqList {
      * @param qqId QQ号
      */
     public void insertBanQq(Long qqId, String reason) {
-            try (Connection conn = DbUtil.getConnection()) {
-                String sql = "INSERT INTO banQqList(createTime,botId,qqId,reason) VALUES(?,?,?,?)";
-                try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                    ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
-                    ps.setLong(2, CQ.getLoginQQ());
-                    ps.setLong(3, qqId);
-                    ps.setString(4, reason);
+        try (Connection conn = DbUtil.getConnection()) {
+            String sql = "INSERT INTO banQqList(createTime,botId,qqId,reason) VALUES(?,?,?,?)";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+                ps.setLong(2, CQ.getLoginQQ());
+                ps.setLong(3, qqId);
+                ps.setString(4, reason);
 
-                    ps.executeUpdate();
-                }
-            } catch (SQLException e) {
-                Log.error(e.getMessage(), e);
+                ps.executeUpdate();
             }
+        } catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
     }
 
     /**

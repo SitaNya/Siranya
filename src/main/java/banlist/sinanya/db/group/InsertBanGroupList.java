@@ -29,19 +29,19 @@ public class InsertBanGroupList {
      * @param groupId 群号
      */
     public void insertBanGroup(Long groupId, String reason) {
-            try (Connection conn = DbUtil.getConnection()) {
-                String sql = "INSERT INTO banGroupList(createTime,botId,groupId,reason) VALUES(?,?,?,?)";
-                try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                    ps.setTimestamp(1,new Timestamp(System.currentTimeMillis()));
-                    ps.setLong(2, CQ.getLoginQQ());
-                    ps.setLong(3, groupId);
-                    ps.setString(4,reason);
+        try (Connection conn = DbUtil.getConnection()) {
+            String sql = "INSERT INTO banGroupList(createTime,botId,groupId,reason) VALUES(?,?,?,?)";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+                ps.setLong(2, CQ.getLoginQQ());
+                ps.setLong(3, groupId);
+                ps.setString(4, reason);
 
-                    ps.executeUpdate();
-                }
-            } catch (SQLException e) {
-                Log.error(e.getMessage(), e);
+                ps.executeUpdate();
             }
+        } catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
     }
 
     /**
