@@ -4,6 +4,8 @@ import banlist.sinanya.db.group.SelectBanGroupList;
 import banlist.sinanya.db.qq.SelectBanQqList;
 import banlist.sinanya.entity.EntityBanDetail;
 
+import java.util.ArrayList;
+
 import static banlist.sinanya.system.SystemBanList.BAN_GROUP_LIST;
 import static banlist.sinanya.system.SystemBanList.BAN_QQ_LIST;
 import static com.sobte.cqp.jcq.event.JcqApp.CQ;
@@ -44,6 +46,14 @@ public class GetBanList {
 
     public static void flushQqGroup(){
         selectBanQqList.flushQqListFromDatabase();
+    }
+
+    public static ArrayList<EntityBanDetail> getBanQqList() {
+        return selectBanQqList.selectBanQqListFromDatabase();
+    }
+
+    public static ArrayList<EntityBanDetail> getBanGroupList() {
+        return selectBanGroupList.selectBanGroupListFromDatabase();
     }
 
     public static EntityBanDetail getBanQqInfo(long qqId) {

@@ -4,45 +4,45 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
+    <Id>com.example</Id>
     <artifactId>demo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
-            <groupId>com.sobte.cqp</groupId>
+            <Id>com.sobte.cqp</Id>
             <artifactId>jcq-coolq</artifactId>
             <version>1.2.7</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/vip.vtool.jcq/vtool-jcq -->
         <dependency>
-            <groupId>vip.vtool.jcq</groupId>
+            <Id>vip.vtool.jcq</Id>
             <artifactId>vtool-jcq</artifactId>
             <version>1.0.1</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.json-lib</groupId>
+            <Id>net.sf.json-lib</Id>
             <artifactId>json-lib</artifactId>
             <version>2.4</version>
             <classifier>jdk15</classifier>
         </dependency>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
+            <Id>org.apache.logging.log4j</Id>
             <artifactId>log4j-api</artifactId>
             <version>2.11.2</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
+            <Id>org.apache.logging.log4j</Id>
             <artifactId>log4j-core</artifactId>
             <version>2.11.2</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
+            <Id>mysql</Id>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.47</version>
         </dependency>
         <dependency>
-            <groupId>com.mchange</groupId>
+            <Id>com.mchange</Id>
             <artifactId>c3p0</artifactId>
             <version>0.9.5.2</version>
         </dependency>
@@ -50,12 +50,12 @@
 
     <build>
         <!-- 此处填写打包后的jar文件名 -->
-        <finalName>${groupId}.${artifactId}</finalName>
+        <finalName>${Id}.${artifactId}</finalName>
 
         <!-- 将依赖包输出到 target\lib 中, 将lib目录复制到插件 同名文件夹下 即可导入依赖 -->
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
+                <Id>org.apache.maven.plugins</Id>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
@@ -74,11 +74,11 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
+                <Id>org.apache.maven.plugins</Id>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>7</source>
-                    <target>7</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
         </plugins>

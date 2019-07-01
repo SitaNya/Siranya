@@ -1,4 +1,4 @@
-package banlist.sinanya.group;
+package banlist.sinanya.main.imal;
 
 import banlist.sinanya.entity.EntityBanDetail;
 import com.sobte.cqp.jcq.entity.Group;

@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static banlist.sinanya.system.SystemBanList.BAN_GROUP_LIST;
 import static banlist.sinanya.system.SystemBanList.BAN_QQ_LIST;
 import static com.sobte.cqp.jcq.event.JcqApp.CQ;
 
@@ -55,12 +54,12 @@ public class SelectBanQqList {
      */
     public EntityBanDetail selectBanQqInfoFromDatabase(long qqId) {
         try (Connection conn = DbUtil.getConnection()) {
-            String sql = "select createTime,reason from banQqList where qqId=?";
+            String sql = "select createTime,reason,botId from banQqList where qqId=?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setLong(1, qqId);
                 try (ResultSet set = ps.executeQuery()) {
                     ArrayList<Long> banGroupListTmp = new ArrayList<>();
-                    while (set.next()) {
+                    if (set.next()) {
                         return new EntityBanDetail(set.getTimestamp("createTime"), qqId, set.getLong("botId"), set.getString("reason"));
                     }
                 }
@@ -69,5 +68,25 @@ public class SelectBanQqList {
             Log.error(e.getMessage(), e);
         }
         return null;
+    }
+
+    /**
+     * 刷新kp主群设定到静态变量中，只有静态变量中找不到某人的kp主群记录时才会使用
+     */
+    public ArrayList<EntityBanDetail> selectBanQqListFromDatabase() {
+        ArrayList<EntityBanDetail> banQqList = new ArrayList<>();
+        try (Connection conn = DbUtil.getConnection()) {
+            String sql = "select createTime,reason,qqId,botId from banQqList";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                try (ResultSet set = ps.executeQuery()) {
+                    while (set.next()) {
+                        banQqList.add(new EntityBanDetail(set.getTimestamp("createTime"), set.getLong("qqId"), set.getLong("botId"), set.getString("reason")));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+        return banQqList;
     }
 }

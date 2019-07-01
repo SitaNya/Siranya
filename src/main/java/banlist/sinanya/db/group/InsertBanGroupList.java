@@ -43,4 +43,22 @@ public class InsertBanGroupList {
                 Log.error(e.getMessage(), e);
             }
     }
+
+    /**
+     * 将kp主群设定插入或更新到数据库中
+     *
+     * @param groupId 群号
+     */
+    public void removeBanGroup(Long groupId) {
+        try (Connection conn = DbUtil.getConnection()) {
+            String sql = "delete from banGroupList where botId=? and groupId=?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setLong(1, CQ.getLoginQQ());
+                ps.setLong(2, groupId);
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+    }
 }

@@ -43,4 +43,22 @@ public class InsertBanQqList {
                 Log.error(e.getMessage(), e);
             }
     }
+
+    /**
+     * 将kp主群设定插入或更新到数据库中
+     *
+     * @param qqId QQ号
+     */
+    public void removeBanQq(Long qqId) {
+        try (Connection conn = DbUtil.getConnection()) {
+            String sql = "delete from banQqList where botId=? and groupId=?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setLong(1, CQ.getLoginQQ());
+                ps.setLong(2, qqId);
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+    }
 }

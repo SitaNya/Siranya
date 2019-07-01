@@ -54,7 +54,7 @@ public class SelectBanGroupList {
      */
     public EntityBanDetail selectBanGroupInfoFromDatabase(long groupId) {
         try (Connection conn = DbUtil.getConnection()) {
-            String sql = "select createTime,reason from banGroupList where groupId=?";
+            String sql = "select createTime,reason,botId from banGroupList where groupId=?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setLong(1, groupId);
                 try (ResultSet set = ps.executeQuery()) {
@@ -67,5 +67,25 @@ public class SelectBanGroupList {
             Log.error(e.getMessage(), e);
         }
         return null;
+    }
+
+    /**
+     * 刷新kp主群设定到静态变量中，只有静态变量中找不到某人的kp主群记录时才会使用
+     */
+    public ArrayList<EntityBanDetail> selectBanGroupListFromDatabase() {
+        ArrayList<EntityBanDetail> banGroupList = new ArrayList<>();
+        try (Connection conn = DbUtil.getConnection()) {
+            String sql = "select createTime,reason,qqId,botId,groupId from banGroupList";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                try (ResultSet set = ps.executeQuery()) {
+                    while (set.next()) {
+                        banGroupList.add(new EntityBanDetail(set.getTimestamp("createTime"), set.getLong("groupId"), set.getLong("botId"), set.getString("reason")));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+        return banGroupList;
     }
 }

@@ -32,12 +32,32 @@ public class SetBanList {
         BAN_GROUP_LIST.put(CQ.getLoginQQ(), banGroup);
     }
 
+    public static void rmBanGroup(Long groupId) {
+        insertBanGroupList.removeBanGroup(groupId);
+        ArrayList<Long> banGroup = new ArrayList<>();
+        if (BAN_GROUP_LIST.containsKey(CQ.getLoginQQ())) {
+            banGroup = BAN_GROUP_LIST.get(CQ.getLoginQQ());
+            banGroup.remove(groupId);
+        }
+        BAN_GROUP_LIST.put(CQ.getLoginQQ(), banGroup);
+    }
+
     public static void setBanQq(Long qqId,String reason) {
         insertBanQqList.insertBanQq(qqId,reason);
         ArrayList<Long> banQq = new ArrayList<>();
         if (BAN_QQ_LIST.containsKey(CQ.getLoginQQ())) {
             banQq = BAN_QQ_LIST.get(CQ.getLoginQQ());
             banQq.add(qqId);
+        }
+        BAN_QQ_LIST.put(CQ.getLoginQQ(), banQq);
+    }
+
+    public static void rmBanQq(Long qqId) {
+        insertBanQqList.removeBanQq(qqId);
+        ArrayList<Long> banQq = new ArrayList<>();
+        if (BAN_QQ_LIST.containsKey(CQ.getLoginQQ())) {
+            banQq = BAN_QQ_LIST.get(CQ.getLoginQQ());
+            banQq.remove(qqId);
         }
         BAN_QQ_LIST.put(CQ.getLoginQQ(), banQq);
     }
