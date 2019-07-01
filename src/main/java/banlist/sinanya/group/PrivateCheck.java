@@ -18,8 +18,8 @@ import static com.sobte.cqp.jcq.event.JcqApp.CQ;
  * 类说明:
  */
 public class PrivateCheck {
-    long fromQq;
-    boolean isQqBan;
+    private long fromQq;
+    private boolean isQqBan;
 
     public PrivateCheck(long fromQq) {
         this.fromQq=fromQq;

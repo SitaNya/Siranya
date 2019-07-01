@@ -28,7 +28,7 @@ public class InsertBanQqList {
      *
      * @param qqId QQ号
      */
-    public void insertBanQQ(Long qqId, String reason) {
+    public void insertBanQq(Long qqId, String reason) {
             try (Connection conn = DbUtil.getConnection()) {
                 String sql = "INSERT INTO banQqList(createTime,botId,qqId,reason) VALUES(?,?,?,?)";
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -36,6 +36,7 @@ public class InsertBanQqList {
                     ps.setLong(2, CQ.getLoginQQ());
                     ps.setLong(3, qqId);
                     ps.setString(4, reason);
+
                     ps.executeUpdate();
                 }
             } catch (SQLException e) {

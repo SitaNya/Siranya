@@ -12,10 +12,10 @@ import java.util.Date;
  * 类说明:
  */
 public class EntityBanDetail {
-    Date createTime;
-    long groupId;
-    long botId;
-    String reason;
+    private Date createTime;
+    private long groupId;
+    private long botId;
+    private String reason;
 
     public EntityBanDetail(Date createTime, long groupId, long botId, String reason) {
         this.createTime = createTime;

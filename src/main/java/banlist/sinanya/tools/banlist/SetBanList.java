@@ -33,7 +33,7 @@ public class SetBanList {
     }
 
     public static void setBanQq(Long qqId,String reason) {
-        insertBanQqList.insertBanQQ(qqId,reason);
+        insertBanQqList.insertBanQq(qqId,reason);
         ArrayList<Long> banQq = new ArrayList<>();
         if (BAN_QQ_LIST.containsKey(CQ.getLoginQQ())) {
             banQq = BAN_QQ_LIST.get(CQ.getLoginQQ());

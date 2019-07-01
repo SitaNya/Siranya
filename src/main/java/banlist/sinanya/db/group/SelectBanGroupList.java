@@ -58,8 +58,7 @@ public class SelectBanGroupList {
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setLong(1, groupId);
                 try (ResultSet set = ps.executeQuery()) {
-                    ArrayList<Long> banGroupListTmp = new ArrayList<>();
-                    while (set.next()) {
+                    if (set.next()) {
                         return new EntityBanDetail(set.getTimestamp("createTime"), groupId, set.getLong("botId"), set.getString("reason"));
                     }
                 }
