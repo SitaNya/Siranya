@@ -8,9 +8,6 @@ import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static dice.sinanya.tools.getinfo.GetMessagesSystem.messagesSystem;
-
-
 /**
  * @author SitaNya
  * 日期: 2019-06-15
@@ -38,9 +35,9 @@ class DbPool {
             dataSource = new ComboPooledDataSource();
 
             dataSource.setDriverClass("com.mysql.jdbc.Driver");
-            dataSource.setJdbcUrl("jdbc:mysql://123.207.150.160:3306/roles?useUnicode=true&characterEncoding=gbk&zeroDateTimeBehavior=convertToNull");
+            dataSource.setJdbcUrl("jdbc:mysql://123.207.150.160:3306/banList?useUnicode=true&characterEncoding=gbk&zeroDateTimeBehavior=convertToNull");
             dataSource.setUser("root");
-            dataSource.setPassword(messagesSystem.get("dbPassword"));
+            dataSource.setPassword("rong");
             dataSource.setIdleConnectionTestPeriod(3600);
             Log.info("create DbPool");
         } catch (PropertyVetoException e) {
