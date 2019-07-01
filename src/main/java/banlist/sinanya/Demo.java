@@ -59,7 +59,7 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
     @Override
     public String appInfo() {
         // 应用AppID,规则见 http://d.cqp.me/Pro/开发/基础信息#appid
-        String appId = "sitanya.icloud.banList";
+        String appId = "sitanya.icloud.banlist";
         // 记住编译后的文件和json也要使用appid做文件名
         /*
           本函数【禁止】处理其他任何代码，以免发生异常情况。
