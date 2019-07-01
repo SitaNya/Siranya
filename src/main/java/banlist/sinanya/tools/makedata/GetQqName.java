@@ -18,6 +18,11 @@ public class GetQqName {
     }
 
     public static String getQqName(long qqId) {
-        return CQ.getStrangerInfo(qqId).getNick();
+        try {
+            return CQ.getStrangerInfo(qqId).getNick();
+        } catch (Exception e) {
+            CQ.logError(e.getMessage(), String.valueOf(qqId));
+            return "发生错误，未找到";
+        }
     }
 }
